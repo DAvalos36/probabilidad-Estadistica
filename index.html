@@ -1,0 +1,532 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="bootstrap-4.3.1-dist/css/bootstrap.min.css">
+
+    <link rel="stylesheet" href="estilos.css">
+    <script src="js/Chart.js"></script>
+    <script src="js/Chart.BoxPlot.min.js"></script>
+    <link rel="icon" href="https://img.icons8.com/ios-filled/100/000000/normal-distribution-histogram.png" type="image/x-icon">
+    
+    <style>img[src*="https://cdn.000webhost.com/000webhost/logo/footer-powered-by-000webhost-white2.png"]{
+        display: none;
+        }
+        </style>
+    
+    <title>Jale Probabilidad xd</title>
+</head>
+
+<body>
+    <div class="container-fluid">
+        <div class="form-group" id="form">
+            <div id="superior">
+                <h6>Introduzca los numero a utilizar separados por espacios.</h6>
+            <textarea id="ingresarDatos" class="form-control rounded-0" rows="5" style="resize: none;" placeholder="Ejemplo: 93 58 62 78 65 48 68 59 48 52 62 87 85 68 62 98 48 62 57 68 95 58 62 59 78 62 63"></textarea>
+            </div>
+            <center><input type="button" value="Calcular" id="boton" class="btn btn-primary btn-lg"></center>
+            <br>
+            <center><H3>Opciones</H3></center>
+            <div class="card cardPadre">
+                <div class="card-body">
+                    <div class="custom-control custom-switch opciones">
+                        <input type="checkbox" class="custom-control-input" id="switchPonderada">
+                        <label class="custom-control-label" for="switchPonderada">Dar valor media ponderada</label>
+                    </div>
+                </div>
+            </div>    
+            <div class="card cardPadre">
+                <div class="card-body">
+                    <div class="custom-control custom-radio custom-control-inline opciones">
+                        <input type="radio" id="radioPoblacional" name="PoM" class="custom-control-input" checked>
+                        <label class="custom-control-label" for="radioPoblacional">Poblacional</label>
+                      </div>
+                      <div class="custom-control custom-radio custom-control-inline">
+                        <input type="radio" id="radioMuestral" name="PoM" class="custom-control-input">
+                        <label class="custom-control-label" for="radioMuestral">Muestral</label>
+                      </div>
+                </div>
+            </div>
+            <!-- <div class="card cardPadre">
+              <div class="card-body">
+                <div class="form-row">
+                  <div class="col-6 align-self-center"><label class="" for="cPareto">Cantidad pareto: </label></div>
+                  <div class="col-4">
+                    <input type="text" class="form-control botones" id="cPareto" placeholder="Valor">
+                  </div>
+                </div>
+              </div>
+            </div> -->
+
+        </div>
+    </div>
+
+
+
+
+    <div class="accordion" id="acordionTodo" hidden>
+        <div class="card">
+          <div class="card-header bg-primary" id="headingOne">
+            <h2 class="mb-0">
+              <button class="btn cBoton" type="button" data-toggle="collapse" data-target="#cTab" aria-expanded="true" aria-controls="cTab">
+                Tabla de distribucion de frecuencias
+              </button>
+            </h2>
+          </div>
+          <div id="cTab" class="collapse show" aria-labelledby="headingOne" data-parent="#acordionTodo">
+            <div class="card-body">
+
+                <div class="card cardPadre">
+                  <div class="table-responsive">
+                    <table class="table table-hover " >
+                        <thead class="thead-dark text-center">
+                            <tr>
+                                <th scope="col" colspan="2">Intervalos de confianza</th>
+                                <th scope="col">Frecuencia</th>
+                                <th scope="col">Frecuencia Relativa</th>
+                                <th scope="col">M.C.</th>
+                                <th scope="col">Frecuencia acomulada</th>
+                                <th scope="col">Frecuencia acomulada relativa</th>
+                            </tr>
+                        </thead>
+                        <tbody id="cuerpoTabla" class="text-center">
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="">
+                  <div class="row">
+                    <div class="col-6 d-flex justify-content-center"> <div class="rMed coloresCuadro" ></div>  Mediana</div>
+                    <div class="col-6 d-flex justify-content-center"> <div class="rModa coloresCuadro"></div>  Moda</div>
+                  </div>
+
+                </div>
+                </div>
+
+            </div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-header bg-primary" id="headingTwo">
+            <h2 class="mb-0">
+              <button class="btn cBoton" type="button" data-toggle="collapse" data-target="#cGraficas" aria-expanded="false" aria-controls="cGraficas">
+                Histograma, Poligono de frecuencias y Ojivas
+              </button>
+            </h2>
+          </div>
+          <div id="cGraficas" class="collapse" aria-labelledby="headingTwo" data-parent="#acordionTodo">
+            <div class="card-body">
+                <div class="row" id="graficas" >
+                    <div class="col-lg-4 col-md-12 col-sm-12"><canvas id="histograma" height="100%;" width="100%;"></canvas></div>
+                    <div class="col-lg-4 col-md-12 col-sm-12"><canvas id="poligono" height="100%;" width="100%;"></canvas></div>
+                    <div class="col-lg-4 col-md-12 col-sm-12"><canvas id="ojiva" height="100%;" width="100%;"></canvas></div>
+                </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-header bg-primary" id="headingThree">
+            <h2 class="mb-0">
+              <button class="btn cBoton" type="button" data-toggle="collapse" data-target="#cMediaNoAgrupados" aria-expanded="false" aria-controls="cMediaNoAgrupados">
+                Media, Moda Y Mediana Datos NO agrupados
+              </button>
+            </h2>
+          </div>
+          <div id="cMediaNoAgrupados" class="collapse" aria-labelledby="headingThree" data-parent="#acordionTodo">
+            <div class="card-body">
+
+              <div class="card cardPadre" id="PondManual" hidden>
+                <div class="table-responsive">
+                  <div class="btn-group " id="Ponderada" role="group" aria-label="First group">
+                  </div>
+                </div>
+                  <div class="form-row" >
+                    <div class="col-3">
+                      <input type="text" class="form-control botones" id="valorPond" placeholder="Valor">
+                    </div>
+                    <div class="col-4">
+                      <button class="btn btn-primary col-12 botones" id="BotonDarPond">Dar</button>
+                    </div>
+                    <div class="col-4">
+                      <button class="btn btn-primary col-12 botones"  id="BotonCalcularPond" disabled>Calcular</button>
+                    </div>
+                  </div>
+              </div>
+
+              <div class="card cardPadre">
+                <div class="row">
+                  <div class="col-5 text-capitalize font-weight-bolder datoTitulo align-self-center ">media aritmetica:</div>
+                  <div class="col-7 text-right text-lg-center datoDato align-self-center" id="dMedAritmetica">X</div>
+                </div>
+                <div class="row">
+                  <div class="col-5 text-capitalize font-weight-bolder datoTitulo align-self-center ">media geometrica:</div>
+                  <div class="col-7 text-right text-lg-center datoDato align-self-center" id="dMedGeometrica">X</div>
+                </div>
+                <div class="row">
+                  <div class="col-5 text-capitalize font-weight-bolder datoTitulo align-self-center ">media ponderada:</div>
+                  <div class="col-7 text-right text-lg-center datoDato align-self-center" id="dMedPonderada">X</div>
+                </div>
+                <div class="row">
+                  <div class="col-5 text-capitalize font-weight-bolder datoTitulo align-self-center ">Moda:</div>
+                  <div class="col-7 text-right text-lg-center datoDato align-self-center" id="dModa">X</div>
+                </div>
+                <div class="row">
+                  <div class="col-5 text-capitalize font-weight-bolder datoTitulo align-self-center ">Mediana:</div>
+                  <div class="col-7 text-right text-lg-center datoDato align-self-center" id="dMediana">X</div>
+                </div>
+              </div>
+
+              <div class="text-center font-weight-bold text-info" id="conclusion1"> asdasd</div>
+
+            </div>
+          </div>
+        </div> 
+        
+        <div class="card">
+          <div class="card-header bg-primary" id="headingThree">
+            <h2 class="mb-0">
+              <button class="btn cBoton" type="button" data-toggle="collapse" data-target="#cMediaAgrupados" aria-expanded="false" aria-controls="cMediaAgrupados">
+                Media, Moda Y Mediana Datos agrupados
+              </button>
+            </h2>
+          </div>
+          <div id="cMediaAgrupados" class="collapse" aria-labelledby="headingThree" data-parent="#acordionTodo">
+            <div class="card-body">
+              <div class="card cardPadre">
+                <div class="row">
+                  <div class="col-5 text-capitalize font-weight-bolder datoTitulo align-self-center ">media aritmetica:</div>
+                  <div class="col-7 text-right text-lg-center datoDato align-self-center" id="dMedAritmeticaAgru">X</div>
+                </div>
+                <div class="row">
+                  <div class="col-5 text-capitalize font-weight-bolder datoTitulo align-self-center ">Mediana D.a:</div>
+                  <div class="col-7 text-right text-lg-center datoDato align-self-center" id="dMedianaAgru">X</div>
+                </div>
+                <div class="row">
+                  <div class="col-5 text-capitalize font-weight-bolder datoTitulo align-self-center ">Moda D.a.:</div>
+                  <div class="col-7 text-right text-lg-center datoDato align-self-center" id="dModaAgru">X</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-header bg-primary" id="headingThree">
+            <h2 class="mb-0">
+              <button class="btn cBoton" type="button" data-toggle="collapse" data-target="#cRangoNoAgrupados" aria-expanded="false" aria-controls="cRangoNoAgrupados">
+                Rango, Rango Medio, Desviacion Media, Varianza... NO agrupados.
+              </button>
+            </h2>
+          </div>
+          <div id="cRangoNoAgrupados" class="collapse" aria-labelledby="headingThree" data-parent="#acordionTodo">
+            <div class="card-body">
+              <div class="card cardPadre">
+                <div class="row">
+                  <div class="col-5 text-capitalize font-weight-bolder datoTitulo align-self-center ">Rango:</div>
+                  <div class="col-7 text-right text-lg-center datoDato align-self-center" id="dRango">X</div>
+                </div>
+                <div class="row">
+                  <div class="col-5 text-capitalize font-weight-bolder datoTitulo align-self-center ">Rango medio:</div>
+                  <div class="col-7 text-right text-lg-center datoDato align-self-center" id="dRangoMedio">X</div>
+                </div>
+                <div class="row">
+                  <div class="col-5 text-capitalize font-weight-bolder datoTitulo align-self-center ">Desviacion media:</div>
+                  <div class="col-7 text-right text-lg-center datoDato align-self-center" id="dDesvMedia">X</div>
+                </div>
+                <div class="row">
+                  <div class="col-5 text-capitalize font-weight-bolder datoTitulo align-self-center ">Varianza:</div>
+                  <div class="col-7 text-right text-lg-center datoDato align-self-center" id="dVarianza">X</div>
+                </div>
+                <div class="row">
+                  <div class="col-5 text-capitalize font-weight-bolder datoTitulo align-self-center ">Desviacion estandar:</div>
+                  <div class="col-7 text-right text-lg-center datoDato align-self-center" id="dDesviacionEst">X</div>
+                </div>
+                <div class="row">
+                  <div class="col-5 text-capitalize font-weight-bolder datoTitulo align-self-center ">Coeficiente de variacion:</div>
+                  <div class="col-7 text-right text-lg-center datoDato align-self-center" id="dCoefVariacion">X</div>
+                </div>
+                <div class="row">
+                  <div class="col-5 text-capitalize font-weight-bolder datoTitulo align-self-center ">C.A.P:</div>
+                  <div class="col-7 text-right text-lg-center datoDato align-self-center" id="dCAP">X</div>
+                </div>
+                <div class="row">
+                  <div class="col-5 text-capitalize font-weight-bolder datoTitulo align-self-center ">C.O.F:</div>
+                  <div class="col-7 text-right text-lg-center datoDato align-self-center" id="dCOF">X</div>
+                </div>
+                <div class="row">
+                  <div class="col-5 text-capitalize font-weight-bolder datoTitulo align-self-center ">C.O.B:</div>
+                  <div class="col-7 text-right text-lg-center datoDato align-self-center" id="dCOB">X</div>
+                </div>
+              </div>
+
+              <div class="text-center font-weight-bold text-info" id="c1"></div>
+              <div class="text-center font-weight-bold text-info" id="c2"></div>
+              <div class="text-center font-weight-bold text-info" id="c3"></div>
+
+            </div>
+          </div>
+        </div>
+
+        <div class="card">
+            <div class="card-header bg-primary" id="headingThree">
+              <h2 class="mb-0">
+                <button class="btn cBoton" type="button" data-toggle="collapse" data-target="#cRangoAgrupados" aria-expanded="false" aria-controls="cRangoAgrupados">
+                    Rango, Rango Medio, Varianza... Agrupados.
+                </button>
+              </h2>
+            </div>
+            <div id="cRangoAgrupados" class="collapse" aria-labelledby="headingThree" data-parent="#acordionTodo">
+              <div class="card-body">
+                <div class="card cardPadre">
+                  <div class="row">
+                    <div class="col-5 text-capitalize font-weight-bolder datoTitulo align-self-center ">Rango:</div>
+                    <div class="col-7 text-right text-lg-center datoDato align-self-center" id="dRangoAgru">X</div>
+                  </div>
+                  <div class="row">
+                    <div class="col-5 text-capitalize font-weight-bolder datoTitulo align-self-center ">Rango medio:</div>
+                    <div class="col-7 text-right text-lg-center datoDato align-self-center" id="dRangoMedioAgru">X</div>
+                  </div>
+                  <div class="row">
+                    <div class="col-5 text-capitalize font-weight-bolder datoTitulo align-self-center ">Varianza:</div>
+                    <div class="col-7 text-right text-lg-center datoDato align-self-center" id="dVarianzaAgru">X</div>
+                  </div>
+                  <div class="row">
+                    <div class="col-5 text-capitalize font-weight-bolder datoTitulo align-self-center ">Desviacion estandar:</div>
+                    <div class="col-7 text-right text-lg-center datoDato align-self-center" id="dDesviacionEstAgru">X</div>
+                  </div>
+  
+                </div>
+              </div>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-header bg-primary" id="headingThree">
+              <h2 class="mb-0">
+                <button class="btn cBoton" type="button" data-toggle="collapse" data-target="#cCuartilesNoAgrupados" aria-expanded="false" aria-controls="cCuartilesNoAgrupados">
+                    Cuartil 1, 2, 3 Datos NO Agrupados
+                </button>
+              </h2>
+            </div>
+            <div id="cCuartilesNoAgrupados" class="collapse" aria-labelledby="headingThree" data-parent="#acordionTodo">
+              <div class="card-body">
+                <div class="card cardPadre">
+                  <div class="row">
+                    <div class="col-5 text-capitalize font-weight-bolder datoTitulo align-self-center ">Q1:</div>
+                    <div class="col-3 text-right text-lg-center datoDato align-self-center" id="dQ1">X</div>
+                    <div class="col-4 text-right text-lg-center datoDato align-self-center" id="dQ1Val">X</div>
+                  </div>
+                  <div class="row">
+                    <div class="col-5 text-capitalize font-weight-bolder datoTitulo align-self-center ">Q2:</div>
+                    <div class="col-3 text-right text-lg-center datoDato align-self-center" id="dQ2">X</div>
+                    <div class="col-4 text-right text-lg-center datoDato align-self-center" id="dQ2Val">X</div>
+                  </div>
+                  <div class="row">
+                    <div class="col-5 text-capitalize font-weight-bolder datoTitulo align-self-center ">Q3:</div>
+                    <div class="col-3 text-right text-lg-center datoDato align-self-center" id="dQ3">X</div>
+                    <div class="col-4 text-right text-lg-center datoDato align-self-center" id="dQ3Val">X</div>
+                  </div>
+  
+                </div>
+              </div>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-header bg-primary" id="headingThree">
+              <h2 class="mb-0">
+                <button class="btn cBoton" type="button" data-toggle="collapse" data-target="#cCuartilesAgrupados" aria-expanded="false" aria-controls="cCuartilesAgrupados">
+                    Cuartil 1, 2, 3 Datos agrupados
+                </button>
+              </h2>
+            </div>
+            <div id="cCuartilesAgrupados" class="collapse" aria-labelledby="headingThree" data-parent="#acordionTodo">
+              <div class="card-body">
+
+                <div class="card cardPadre">
+                  <div class="row">
+                    <div class="col-5 text-capitalize font-weight-bolder datoTitulo align-self-center ">Q1:</div>
+                    <div class="col-7 text-right text-lg-center datoDato align-self-center" id="dQ1Agru">X</div>
+                  </div>
+                  <div class="row">
+                    <div class="col-5 text-capitalize font-weight-bolder datoTitulo align-self-center ">Q2:</div>
+                    <div class="col-7 text-right text-lg-center datoDato align-self-center" id="dQ2Agru">X</div>
+                  </div>
+                  <div class="row">
+                    <div class="col-5 text-capitalize font-weight-bolder datoTitulo align-self-center ">Q3:</div>
+                    <div class="col-7 text-right text-lg-center datoDato align-self-center" id="dQ3Agru">X</div>
+                  </div>
+                </div>
+
+              </div>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-header bg-primary" id="headingThree">
+              <h2 class="mb-0">
+                <button class="btn cBoton" type="button" data-toggle="collapse" data-target="#cCajaBigoteNoAgrupados" aria-expanded="false" aria-controls="cCajaBigoteNoAgrupados">
+                    Caja Bigotes Datos NO Agrupados
+                </button>
+              </h2>
+            </div>
+            <div id="cCajaBigoteNoAgrupados" class="collapse" aria-labelledby="headingThree" data-parent="#acordionTodo">
+              <div class="card-body">
+
+                <div class="row justify-content-center">
+                  <div class="col-lg-8 col-md-12 col-sm-12 justify-content-center">
+                    <canvas id="caja" height="100%;" width="100%;"></canvas>
+                  </div>
+                </div>
+
+                <div class="card cardPadre">
+                  <div class="row">
+                    <div class="col-5 text-capitalize font-weight-bolder datoTitulo align-self-center ">Rango Intercuartilico (R.I.C):</div>
+                    <div class="col-7 text-right text-lg-center datoDato align-self-center" id="ric1">X</div>
+                  </div>
+                  <div class="row">
+                    <div class="col-5 text-capitalize font-weight-bolder datoTitulo align-self-center ">Limite Inrerior:</div>
+                    <div class="col-7 text-right text-lg-center datoDato align-self-center" id="li1">X</div>
+                  </div>
+                  <div class="row">
+                    <div class="col-5 text-capitalize font-weight-bolder datoTitulo align-self-center ">Valor minimo:</div>
+                    <div class="col-7 text-right text-lg-center datoDato align-self-center" id="dVMin1">X</div>
+                  </div>
+                  <div class="row">
+                    <div class="col-5 text-capitalize font-weight-bolder datoTitulo align-self-center ">Q1:</div>
+                    <div class="col-7 text-right text-lg-center datoDato align-self-center" id="dQ1-2">X</div>
+                  </div>
+                  <div class="row">
+                    <div class="col-5 text-capitalize font-weight-bolder datoTitulo align-self-center ">Q2:</div>
+                    <div class="col-7 text-right text-lg-center datoDato align-self-center" id="dQ2-2">X</div>
+                  </div>
+                  <div class="row">
+                    <div class="col-5 text-capitalize font-weight-bolder datoTitulo align-self-center ">Q3:</div>
+                    <div class="col-7 text-right text-lg-center datoDato align-self-center" id="dQ3-2">X</div>
+                  </div>
+                  <div class="row">
+                    <div class="col-5 text-capitalize font-weight-bolder datoTitulo align-self-center ">Valor Maximo</div>
+                    <div class="col-7 text-right text-lg-center datoDato align-self-center" id="dMax1">X</div>
+                  </div>
+                  <div class="row">
+                    <div class="col-5 text-capitalize font-weight-bolder datoTitulo align-self-center ">Limite Superior:</div>
+                    <div class="col-7 text-right text-lg-center datoDato align-self-center" id="dls1">X</div>
+                  </div>
+                </div>
+
+              </div>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-header bg-primary" id="headingThree">
+              <h2 class="mb-0">
+                <button class="btn cBoton" type="button" data-toggle="collapse" data-target="#cCajaBigoteAgrupados" aria-expanded="false" aria-controls="cCajaBigoteAgrupados">
+                    Caja Bigotes Datos Agrupados
+                </button>
+              </h2>
+            </div>
+            <div id="cCajaBigoteAgrupados" class="collapse" aria-labelledby="headingThree" data-parent="#acordionTodo">
+              <div class="card-body">
+
+                <div class="row justify-content-center">
+                  <div class="col-lg-8 col-md-12 col-sm-12">
+                    <canvas id="CajaAgru" height="100%" width="100%;"></canvas>
+                  </div>
+                </div>
+
+                <div class="card cardPadre">
+                  <div class="row">
+                    <div class="col-5 text-capitalize font-weight-bolder datoTitulo align-self-center ">Rango Intercuartilico (R.I.C):</div>
+                    <div class="col-7 text-right text-lg-center datoDato align-self-center" id="ric2">X</div>
+                  </div>
+                  <div class="row">
+                    <div class="col-5 text-capitalize font-weight-bolder datoTitulo align-self-center ">Limite Inrerior:</div>
+                    <div class="col-7 text-right text-lg-center datoDato align-self-center" id="li2">X</div>
+                  </div>
+                  <div class="row">
+                    <div class="col-5 text-capitalize font-weight-bolder datoTitulo align-self-center ">Valor minimo:</div>
+                    <div class="col-7 text-right text-lg-center datoDato align-self-center" id="dVMin2">X</div>
+                  </div>
+                  <div class="row">
+                    <div class="col-5 text-capitalize font-weight-bolder datoTitulo align-self-center ">Q1:</div>
+                    <div class="col-7 text-right text-lg-center datoDato align-self-center" id="dQ1Agru-2">X</div>
+                  </div>
+                  <div class="row">
+                    <div class="col-5 text-capitalize font-weight-bolder datoTitulo align-self-center ">Q2:</div>
+                    <div class="col-7 text-right text-lg-center datoDato align-self-center" id="dQ2Agru-2">X</div>
+                  </div>
+                  <div class="row">
+                    <div class="col-5 text-capitalize font-weight-bolder datoTitulo align-self-center ">Q3:</div>
+                    <div class="col-7 text-right text-lg-center datoDato align-self-center" id="dQ3Agru-2">X</div>
+                  </div>
+                  <div class="row">
+                    <div class="col-5 text-capitalize font-weight-bolder datoTitulo align-self-center ">Valor Maximo</div>
+                    <div class="col-7 text-right text-lg-center datoDato align-self-center" id="dMax2">X</div>
+                  </div>
+                  <div class="row">
+                    <div class="col-5 text-capitalize font-weight-bolder datoTitulo align-self-center ">Limite Superior:</div>
+                    <div class="col-7 text-right text-lg-center datoDato align-self-center" id="dLs2">X</div>
+                  </div>
+                </div>
+
+              </div>
+            </div>
+        </div>
+
+        <div class="card ultimo">
+            <div class="card-header bg-primary" id="headingThree">
+              <h2 class="mb-0">
+                <button class="btn cBoton" type="button" data-toggle="collapse" data-target="#cPareto" aria-expanded="false" aria-controls="cPareto">
+                    Diagrama de Pareto
+                </button>
+              </h2>
+            </div>
+            <div id="cPareto" class="collapse" aria-labelledby="headingThree" data-parent="#acordionTodo">
+              <div class="card-body">
+
+                <div class="row">
+                  <div class="col-12">
+                    <textarea id="datosPareto" class="form-control rounded-0" rows="3" style="resize: none;" placeholder="Ingrese los datos (solo numeros) para pareto SEPARADOS POR ESPACIOS"></textarea>
+                  </div>
+                  <div class="col-12"><center><input type="button" value="Generar" id="gPareto" class="btn btn-primary btn-lg botones"></center></div>
+                </div>
+
+                <div class="table-responsive">
+                  <table class="table table-hover table-striped" >
+                      <thead class="thead-dark text-center">
+                          <tr>
+                              <th scope="col">Codigo</th>
+                              <th scope="col">Frecuencia</th>
+                              <th scope="col">Frecuencia Relativa</th>
+                              <th scope="col">Frecuencia acomulada relativa</th>
+                          </tr>
+                      </thead>
+                      <tbody id="cuerpoTablaPareto" class="text-center">
+                      </tbody>
+                  </table>
+                </div>
+
+                <div class="row justify-content-center">
+                  <div class="col-lg-8 col-md-12 col-sm-12">
+                    <canvas id="pareto" height="80%;" width="100%;"></canvas>
+                  </div>
+                </div>
+              </div>
+            </div>
+        </div>
+
+      </div>
+
+    <script src="js/jquery-3.4.1.js"></script>
+    <script src="js/script.js"></script>
+    <script src="bootstrap-4.3.1-dist/js/bootstrap.min.js"></script>
+</body>
+</html>

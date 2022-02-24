@@ -1,0 +1,96 @@
+.container-fluid{
+    padding-top: 15px;
+}
+#superior {
+    margin: -15px;
+    padding: 15px;
+    padding-top: 25px;
+    background-color: #007bff;
+    /* #16222e; */
+    color: white;
+    margin-bottom: 15px;
+}
+#ingresarDatos {
+    /* background-color:#192734; */
+    border: none;
+    color: black;
+}
+#boton {
+    margin: 15px;
+    border-radius: 0%;
+}
+.botones {
+    margin: 15px;
+    border-radius: 0%;
+}
+.opciones {
+    margin-left: 15px;
+}
+#acordionTodo {
+    margin-top: -14px;
+}
+.cardPadre {
+    margin-top: 15px;
+    margin-bottom: 25px;
+    border-radius: 0%;
+    box-shadow: 0px 3px 10px 0px rgba(0,123,255,0.24);
+}
+.table .thead-dark th {
+    color: #fff;
+    background-color: #007bff;
+    border-color: #007bff;
+}
+.rMed{
+    background-color: rgba(101,52,158,0.85);
+}
+.rModa{
+    background-color: rgba(116,209,144,0.85);
+}
+.rAmbos {
+    background: rgb(101,52,158);
+    background: linear-gradient(165deg, rgba(101,52,158,0.85) 50%, rgba(116,209,144,0.85) 50%);
+}
+.coloresCuadro {
+    border-color: #007bff;
+    border-width: medium;
+    width: 24px;
+    height: 24px;
+    margin-right: 5px;
+}
+.datos{
+    border-radius: 0%;
+    border-color: lightgray;
+    border-width: 2px;
+    margin-bottom: 5px;
+}
+.datoTitulo {
+    padding-right: inherit;
+    padding-left: 19px;
+}
+.datoDato{
+    padding-right: 19px;
+    padding-left: inherit;
+}
+/* .row {
+    margin-bottom: 2px;
+} */
+.cBoton{
+    color: white;
+}
+.cBoton:hover{
+    color: white;
+    /* color: blueviolet; */
+    font-weight: bold;
+}
+.ultimo {
+    margin-bottom: 15px;
+}
+/* #datosPareto{
+    
+} */
+.scrolling-wrapper {
+    overflow-x: hidden;
+    overflow-y: hidden;
+    white-space: nowrap;
+  
+  }
